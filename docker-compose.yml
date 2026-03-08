@@ -1,0 +1,19 @@
+services:
+
+  tf-serving:
+    image: tensorflow/serving
+    container_name: tf_model
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./model:/models/sentiment
+    environment:
+      - MODEL_NAME=sentiment
+
+  fastapi:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - tf-serving

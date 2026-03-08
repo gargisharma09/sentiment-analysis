@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+requests
+tensorflow
+pickle-mixin
+jinja2
