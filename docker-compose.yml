@@ -1,7 +1,9 @@
+version: '3.8'
+
 services:
 
   tf-serving:
-    image: tensorflow/serving
+    image: tensorflow/serving:latest
     container_name: tf_model
     ports:
       - "8501:8501"
@@ -9,6 +11,8 @@ services:
       - ./model:/models/sentiment
     environment:
       - MODEL_NAME=sentiment
+    networks:
+      - sentiment_network
 
   fastapi:
     build: .
@@ -17,3 +21,11 @@ services:
       - "8000:8000"
     depends_on:
       - tf-serving
+    networks:
+      - sentiment_network
+    environment:
+      - TF_SERVING_HOST=tf-serving
+
+networks:
+  sentiment_network:
+    driver: bridge
